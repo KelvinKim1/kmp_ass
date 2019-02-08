@@ -18,6 +18,7 @@ void short_test (char *text, int N, char * pattern, int M){
 }
 
 void stress_test(int N, int M){
+  int i;
   static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   srand(time(NULL));   // Initialization, should only be called once.
   
@@ -26,17 +27,22 @@ void stress_test(int N, int M){
 	int m = rand() % M + 1; 
     
 	char *text = malloc(n);
-    for (int i=0; i<n; i++){
+    for (i=0; i<n; i++){
 	  int pos = rand() % (int)(sizeof(charset) -1);
       text[i] = charset[pos];      
     }
+
+    text[i] = '\0';
 	
 	char *pattern = malloc(m);
-    for (int i=0; i<m; i++){
+    for (i=0; i<m; i++){
 	  int pos = rand() % (int)(sizeof(charset) -1);
       pattern[i] = charset[pos];      
     }
-    
+     
+    pattern[i] = '\0';
+
+  
     printf("text='%s', pattern='%s'\n", text, pattern);
 	
     int result1 = string_matching_naive(text, n, pattern, m);
