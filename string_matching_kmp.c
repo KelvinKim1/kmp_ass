@@ -3,11 +3,9 @@
 int string_matching_kmp(char *text, int N, char* pattern, int M){
 	int count = 0;
 	int *overlap_list = overlap_array(pattern, M);
-	printf("overlap function: ");
-	print_array(overlap_list,M);
     
     int pos_pattern = 0;
-    for (int i = 0; i<N; i++){ // Change N
+    for (int i = 0; i<N; i++){
         if (pattern[pos_pattern] == text[i]){
             pos_pattern++;
             if (pos_pattern == (M)){
@@ -28,8 +26,7 @@ int string_matching_kmp(char *text, int N, char* pattern, int M){
 
     }
     
-	//TODO - implement kmp search
-	free(overlap_list);
+    free(overlap_list);
 	return count;
 }
 
