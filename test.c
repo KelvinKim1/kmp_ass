@@ -1,9 +1,9 @@
-#include "mach_time.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include "string_matching.h"
+#include <sys/time.h>
 
 void print_array(int *arr, int size){
   for (int i=0; i<size; i++){
@@ -22,8 +22,11 @@ void short_test (char *text, int N, char * pattern, int M){
 void performance_test(){
 
     static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    
+    struct timeval tv1, tv2, tv3, tv4;
+    float Time;
+
     for (int n = 10000; n <= 1000000; n+=100000){
+        
         printf("The text length: %d, pattern length: 400\n", n);
         int i;
         int m = 400;
@@ -44,23 +47,18 @@ void performance_test(){
         
         pattern[i] = '\0';
 
-        int loopCount;
-        
-        uint64_t startTime = mach_absolute_time( );
-        for (loopCount = 0; loopCount < 5; ++loopCount) {
-            string_matching_naive(text, n, pattern, m);
-        }
-        uint64_t endTime = mach_absolute_time( );
-        double averageTime = (double)(endTime-startTime) / 5;
-        printf("Avg time for naive string matching algorithm is %fns\n", averageTime);
-        
-        startTime = mach_absolute_time( );
-        for (loopCount = 0; loopCount < 5; ++loopCount) {
-            string_matching_kmp(text, n, pattern, m);
-        }
-        endTime = mach_absolute_time( );
-        averageTime = (double)(endTime-startTime) / 5;
-        printf("Avg time for kmp string matching algorithm is %fns\n", averageTime);
+        gettimeofday(&tv1, NULL);
+        string_matching_naive(text, n, pattern, m);
+        gettimeofday(&tv2, NULL);
+        Time = (tv2.tv_usec - tv1.tv_usec) + (tv2.tv_sec - tv1.tv_sec)*1000000 ;
+
+        printf("Avg time for naive string matching algorithm is %fms\n", Time);
+        gettimeofday(&tv3, NULL);
+        string_matching_kmp(text, n, pattern, m);
+        gettimeofday(&tv4, NULL);
+        Time = (tv4.tv_usec - tv3.tv_usec)+ (tv4.tv_sec - tv3.tv_sec)*1000000 ;
+ 
+        printf("Avg time for kmp string matching algorithm is %fms\n", Time);
     }
     printf("Texts and patterns are all randomly created.");
 }
