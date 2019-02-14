@@ -27,7 +27,7 @@ void performance_test(){
         int i;
         int m = 400;
 
-        char *text = malloc(n);
+        char *text = malloc(n+1);
         for (i=0; i<n; i++){
             int pos = rand() % (int)(sizeof(charset) -1);
             text[i] = charset[pos];
@@ -35,7 +35,7 @@ void performance_test(){
         
         text[i] = '\0';
         
-        char *pattern = malloc(m);
+        char *pattern = malloc(m+1);
         for (i=0; i<m; i++){
             int pos = rand() % (int)(sizeof(charset) -1);
             pattern[i] = charset[pos];
@@ -107,9 +107,11 @@ void stress_test(int N, int M){
 }
 
 int main(int argc, char **argv ){
-    if (atoi(argv[1]) == 3){
-        performance_test();
-        return 0;
+    if (argc == 2){
+        if (atoi(argv[1]) == 3){
+            performance_test();
+            return 0;
+        }
     }
     if (argc < 4){
         printf("To run: test <1> <text> <N> <pattern> <M> - short test\n or test <2> <N> <M> - stress test\n or test<3> - performance test\n");
