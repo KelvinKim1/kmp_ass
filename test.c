@@ -72,7 +72,7 @@ void stress_test(int N, int M){
     int n = rand() % (N-3) + 3;      // Returns a pseudo-random integer between 3 and N.
 	int m = rand() % M + 1; 
     
-	char *text = malloc(n);
+	char *text = malloc(n+1);
     for (i=0; i<n; i++){
 	  int pos = rand() % (int)(sizeof(charset) -1);
       text[i] = charset[pos];      
@@ -80,7 +80,7 @@ void stress_test(int N, int M){
 
     text[i] = '\0';
 	
-	char *pattern = malloc(m);
+	char *pattern = malloc(m+1);
     for (i=0; i<m; i++){
 	  int pos = rand() % (int)(sizeof(charset) -1);
       pattern[i] = charset[pos];      
@@ -88,9 +88,6 @@ void stress_test(int N, int M){
      
     pattern[i] = '\0';
 
-  
-    printf("text='%s', pattern='%s'\n", text, pattern);
-	
     int result1 = string_matching_naive(text, n, pattern, m);
     int result2 = string_matching_kmp(text, n, pattern, m);
     
